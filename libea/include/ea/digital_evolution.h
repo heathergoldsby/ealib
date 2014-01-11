@@ -20,6 +20,7 @@
 #ifndef _EA_DIGITAL_EVOLUTION_H_
 #define _EA_DIGITAL_EVOLUTION_H_
 
+#include <boost/serialization/split_member.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/shared_ptr.hpp>
 
@@ -248,14 +249,29 @@ namespace ea {
         configuration_type _configurator; //!< Configuration object.
 
     private:
-        friend class boost::serialization::access;
-        template<class Archive>
-        void serialize(Archive & ar, const unsigned int version) {
+		/* These enable serialization and de-serialization of organisms.
+		 This would be easy, except for the fact that we can't round-trip NaNs.  So,
+		 we store a flag instead of priority in that case.
+         */
+		friend class boost::serialization::access;
+		template<class Archive>
+		void save(Archive & ar, const unsigned int version) const {
             ar & boost::serialization::make_nvp("rng", _rng);
             ar & boost::serialization::make_nvp("environment", _env);
             ar & boost::serialization::make_nvp("population", _population);
             ar & boost::serialization::make_nvp("meta_data", _md);
-        }
+		}
+		
+		template<class Archive>
+		void load(Archive & ar, const unsigned int version) {
+            ar & boost::serialization::make_nvp("rng", _rng);
+            ar & boost::serialization::make_nvp("environment", _env);
+            ar & boost::serialization::make_nvp("population", _population);
+            ar & boost::serialization::make_nvp("meta_data", _md);
+            
+            _env.append(_population.begin(),_population.end());
+		}
+		BOOST_SERIALIZATION_SPLIT_MEMBER();
     };
 
 } // ea
