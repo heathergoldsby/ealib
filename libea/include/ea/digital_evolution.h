@@ -268,7 +268,7 @@ namespace ea {
             ar & boost::serialization::make_nvp("environment", _env);
             ar & boost::serialization::make_nvp("population", _population);
             ar & boost::serialization::make_nvp("meta_data", _md);
-            
+            _env.initialize(*this);
             _env.append(_population.begin(),_population.end());
 		}
 		BOOST_SERIALIZATION_SPLIT_MEMBER();

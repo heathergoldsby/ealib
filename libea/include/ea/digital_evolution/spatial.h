@@ -316,7 +316,7 @@ namespace ea {
         //! Append individual x to the environment.
         void append(individual_ptr_type p) {
             if(_append_count >= (_locs.size1()*_locs.size2())) {
-                throw std::out_of_range("spatial::append(individual_ptr_type x); append count=" + boost::lexical_cast<std::string>(_append_count));
+                throw std::out_of_range("spatial::append(individual_ptr_type x); append_count=" + boost::lexical_cast<std::string>(_append_count) + " locs=" + boost::lexical_cast<std::string>(_locs.size1()*_locs.size2()));
             }
             _locs.data()[_append_count].p = p;
             p->location() = &_locs.data()[_append_count];
