@@ -24,6 +24,8 @@
 #include <boost/iterator/iterator_facade.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
+#include <boost/lexical_cast.hpp>
+
 #include <utility>
 #include <vector>
 #include <stdexcept>
@@ -314,7 +316,7 @@ namespace ea {
         //! Append individual x to the environment.
         void append(individual_ptr_type p) {
             if(_append_count >= (_locs.size1()*_locs.size2())) {
-                throw std::out_of_range("spatial::append(individual_ptr_type x)");
+                throw std::out_of_range("spatial::append(individual_ptr_type x); append count=" + boost::lexical_cast<std::string>(_append_count));
             }
             _locs.data()[_append_count].p = p;
             p->location() = &_locs.data()[_append_count];
