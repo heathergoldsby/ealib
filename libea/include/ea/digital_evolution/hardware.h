@@ -133,11 +133,12 @@ namespace ea {
 
                 // if cost is again 0, everything's been paid and we should execute the instruction:
                 if(_cost == 0) {
-                    (*inst)(*this, p, ea);
                     // ANALYSIS ONLY!
 #ifdef EA_ANALYSIS
                     ea.events().instruction_executed(*p, inst, ea);
 #endif
+                    (*inst)(*this, p, ea);
+
                     // if we spent any cycles on this instruction, clear the label stack:
                     if(spent > 0) {
                         clearLabelStack();
